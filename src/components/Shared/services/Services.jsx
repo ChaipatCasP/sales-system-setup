@@ -5,6 +5,7 @@ import StaffInformation from "../../Infomation/StaffInformation";
 export default function Services(props) {
   // console.log(props);
   const API_URL = environment.baseUrl + "apip/WS_SALES_TARGET_SETUP/";
+  const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const { P_COM, P_USER, P_SALES_CHANNEL_CODE, txtfunc } = props;
   const [data, setData] = useState([]);
 
@@ -25,7 +26,8 @@ export default function Services(props) {
   };
 
   useEffect(() => {
-    handButtonClick();
+    //  GET_STAFF_LIST();
+    // handButtonClick();
     // fetch(API_URL + "GET_SALES_LIST", requestOptions)
     //   .then((response) => response.json())
     //   .then((data) => setData(data.result));
@@ -51,7 +53,7 @@ export default function Services(props) {
       });
   }
 
-  const text = data.map((items, index) => {
+  const bodyTxt = data.map((items, index) => {
     return (
       <StaffInformation key={index} staff={items} onStaffClick={onStaffClick} />
     );
@@ -67,24 +69,22 @@ export default function Services(props) {
     return await response.json();
   }
 
-  function handButtonClick(){
-    const endpoint = API_URL + "GET_SALES_LIST";
-    
+  function GET_STAFF_LIST(){
+    const endpoint = API_URL_WS_SALES_PLAN + "GET_STAFF_LIST";
+
     formdata.append("P_COM", P_COM);
-    formdata.append("P_USER", P_USER);
-    formdata.append("P_SALES_CHANNEL_CODE", P_SALES_CHANNEL_CODE);
+    formdata.append("P_USER", "F2304");
+    formdata.append("P_KEY", "");
 
     const data = formdata;
      callAPI(endpoint,data).then(response => {
       setApiResponse(response);
-      // console.log(apiResponse);
+      console.log(apiResponse);
      })
   }
 
-   
-
 
   // console.log(apiResponse);
-  return <div className="app-services">{text}</div>;
+  return <div className="app-services">{bodyTxt}</div>;
 }
 

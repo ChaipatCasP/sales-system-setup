@@ -47,9 +47,11 @@
   left: 0;
   right: 0;
   z-index: 20;
+  height: 45px;
+  
 }
 
-.nav {
+/* .nav {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -57,10 +59,24 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 25px;
+  height: 20px;
+} */
+
+.dropdown-year{
+  margin-top: 8px;
+  margin-left: 10px;
+  width: 120px;
+  height:30px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.dropdown-option {
+  text-align: center;
 }
 
 .app-section {
-  padding-top: 30px;
+  padding-top: 50px;
 }
 
 .app-container {
@@ -71,17 +87,23 @@
 
 .app-content {
   display: grid;
-  grid-template-columns: 25% 75%;
+  grid-template-columns: 18% 82%;
 }
 
 .app-content-main {
   border: 1px solid gray;
 }
 
-.app-content-box {
-  border: 1px solid gray;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.app-content-box {}
+
+.app-content-box-item {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-
+.app-content-box-item>div {
+  flex: 1 0 20%;
+  /* ให้แต่ละ div มีขนาดเท่ากัน และรองรับสูงสุด 4 ตัวในแต่ละแถว */
+  margin-right: 20px;
+  /* ให้เว้นระยะห่างระหว่าง div ด้วยการกำหนดขนาดของ margin */
+}

@@ -1,0 +1,33 @@
+.app-stafflist{
+    font-size: 13px;
+}
+
+.app-stafflist-header {
+    background-color: #d0cecf;
+    color: white;
+
+    display: grid;
+    grid-template-columns:0.1fr 1fr;
+    column-gap: 16px;
+    row-gap: 16px;
+    margin-bottom: 10px;
+}
+
+ .circle {
+        width: 25px;
+        height: 25px;
+        background-color: white;
+        border: solid 5px white;
+        /* border: solid 5px darkcyan; */
+        border-radius: 100%;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+
+.app-stafflist-details {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
