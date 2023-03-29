@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import StaffInformation from "../../Infomation/StaffInformation";
 
 export default function Services(props) {
   const { P_COM, P_USER, P_SALES_CHANNEL_CODE } = props;
@@ -32,7 +31,8 @@ export default function Services(props) {
 
   const text = data.map((items, index) => {
     return (
-      <StaffInformation key={index} staff={items} onStaffClick={onStaffClick} />
+      // <StaffInformation key={index} staff={items} onStaffClick={onStaffClick} />
+      <></>
     );
   });
 

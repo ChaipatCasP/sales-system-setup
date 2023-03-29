@@ -1,32 +1,29 @@
 import "./App.css";
-import { Navigate, useRoutes } from "react-router-dom";
-import Products from "./components/Products/Products";
-import StaffInformation from "./components/Infomation/StaffInformation";
 import productslist from "./Data";
-import Services from "./components/Shared/services/Services";
 import StaffList from "./components/Stafflist/Stafflist";
 import Datalist from "./components/Datalist/Datalist";
 import React, { useEffect, useState } from "react";
 
 function App() {
+  const [p_user, setP_user] = useState("F2304");
+  const [searchText, setSearchText] = useState("");
+
   const [SelStaffCode, setSelStaffCode] = useState("");
-  const [SelYear, setSelYear] = useState("");
+  const [SelYear, setSelYear] = useState("2022");
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setSelYear('2022');
-    setSelStaffCode('F2304');
+    //setSelYear("2022");
+    // setSelStaffCode("F2304");
   }, []);
 
   function onStaffClick(value) {
     setSelStaffCode(value);
-    // alert("onStaffClick : " + value);
   }
 
   function onYearChange(value) {
     setSelYear(value);
-    // alert("onYearChange : " + value);
   }
-
 
   const PlannedElements = productslist.map((product, index) => {
     return (
@@ -41,8 +38,8 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app-header">
-        <header className=" header">
+      <div className="topbar">
+        <span className="name">
           <select
             className="dropdown-year"
             onChange={(event) => onYearChange(event.target.value)}
@@ -59,26 +56,38 @@ function App() {
             <option className="dropdown-option" value={2022} selected>
               2022
             </option>
-            <option className="dropdown-option" value={2023} >
+            <option className="dropdown-option" value={2023}>
               2023
             </option>
           </select>
-
-          {/* <nav className="nav"></nav> */}
-        </header>
+        </span>
+        {/* <span className="code">Code</span> */}
+        {/* <button className="circle-button"></button> */}
+        <span className="code">
+          <label>{p_user}</label>
+          <br />
+          <label>Manager Name</label>
+        </span>
       </div>
-      <section className="app-section"></section>
+
+      {/* <section className="app-section"></section> */}
       <section className="app-container"></section>
-      <input value={SelStaffCode} />
-      <input value={SelYear} />
+      {/* <input value={SelStaffCode} />
+      <input value={SelYear} /> */}
 
       <div className="app-content">
         <div className="app-content-main">
-          <StaffList onClick={onStaffClick} P_YEAR={SelYear} />
+          <div className="app-content-main-Search">
+            <input className="" type="text" placeholder="Search Staff Code" onChange={(event) => setSearchText(event.target.value)}/>
+            
+            <label>{searchText}</label>
+          </div>
+
+          <StaffList onClick={onStaffClick} P_YEAR={SelYear} P_USER={p_user} />
         </div>
 
         <div className="app-content-box">
-          <div className="app-content-box-item">{PlannedElements}</div>
+           <div className="app-content-box-item">{PlannedElements}</div> 
         </div>
       </div>
     </div>

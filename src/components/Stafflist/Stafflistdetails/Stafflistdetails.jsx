@@ -34,11 +34,11 @@ export default function StaffListDetails(props) {
       setApiResponse(response.result);
     });
 
-    console.log("-----------------------");
-    for (const [key, value] of data) {
-      console.log(key + ":" + value);
-    }
-    console.log("FN_GET_VISITATION_INFO");
+    // console.log("-----------------------");
+    // for (const [key, value] of data) {
+    //   console.log(key + ":" + value);
+    // }
+    // console.log("FN_GET_VISITATION_INFO");
   }
 
   if (apiResponse.length !== 0) {

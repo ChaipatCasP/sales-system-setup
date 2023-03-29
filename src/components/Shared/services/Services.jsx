@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { environment } from "../../../environment/environment";
-import StaffInformation from "../../Infomation/StaffInformation";
 
 export default function Services(props) {
   // console.log(props);
@@ -55,7 +54,8 @@ export default function Services(props) {
 
   const bodyTxt = data.map((items, index) => {
     return (
-      <StaffInformation key={index} staff={items} onStaffClick={onStaffClick} />
+      // <StaffInformation key={index} staff={items} onStaffClick={onStaffClick} />
+      <></>
     );
   });
 

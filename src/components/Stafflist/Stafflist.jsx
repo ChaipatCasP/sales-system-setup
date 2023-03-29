@@ -9,8 +9,8 @@ export default function StaffList(props) {
 
   useEffect(() => {
     GET_STAFF_LIST();
-    console.log({P_YEAR});
-  }, []);
+    // console.log({ P_YEAR });
+  }, [props]);
 
   const [apiResponse, setApiResponse] = useState([]);
   async function callAPI(endpoint, data) {
@@ -34,11 +34,11 @@ export default function StaffList(props) {
       setApiResponse(response.result);
     });
 
-    console.log('-----------------------');
-    for (const [key, value] of data) {
-      console.log(key +':'+value);
-    }
-    console.log('FN_GET_STAFF_LIST');
+    // console.log('-----------------------');
+    // for (const [key, value] of data) {
+    //   console.log(key +':'+value);
+    // }
+    // console.log('FN_GET_STAFF_LIST');
   }
 
   function onStaffClick(staffcode) {

@@ -1,4 +1,9 @@
-.app-products-item {
+.txtvalue {
+    font-weight: 500;
+    text-decoration-line: underline;
+}
+
+.app-details-item {
     border: 1px solid gray;
     margin-left: 10px;
     margin-right: 10px;
@@ -13,16 +18,20 @@
     color: #4880a5;
 }
 
-.app-products-item-header {
+.app-details-item-header {
     border-bottom: 1px solid gray;
     height: 30px;
 }
 
-.app-products-item-header h4 {
+.app-details-item-header h4 {
     text-align: center;
 }
 
-.app-products-item-details div {
+.app-details-item-details div {
     padding-top: 2px;
     padding-left: 10px;
+}
+
+.txtheader {
+    padding-right: 10px;
 }
