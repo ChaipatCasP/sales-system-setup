@@ -78,6 +78,7 @@ export default function StaffList(props) {
             onStaffClick(items.STAFF_CODE);
           }}
           id={items.STAFF_CODE}
+          key={index}
         >
           <div
             className="app-stafflist-header"

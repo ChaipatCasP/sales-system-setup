@@ -25,7 +25,8 @@ export default function Datalist(props) {
   const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_QUOTATION_DETAIL = API_URL_WS_SALES_PLAN + "GET_QUOTATION_DETAIL";
   const GET_VISITATION_DETAIL = API_URL_WS_SALES_PLAN + "GET_VISITATION_DETAIL";
-  const GET_SAMPLE = API_URL_WS_SALES_PLAN + "GET_SAMPLE_REQUEST_DETAIL";
+  const GET_SAMPLE_REQUEST_DETAIL =
+    API_URL_WS_SALES_PLAN + "GET_SAMPLE_REQUEST_DETAIL";
   const GET_TOTAL_SALES = API_URL_WS_SALES_PLAN + "GET_TOTAL_SALES";
 
   function getMonthName(monthNumber) {
@@ -57,7 +58,7 @@ export default function Datalist(props) {
         await Promise.all([
           callAPI(GET_QUOTATION_DETAIL, fdata),
           callAPI(GET_VISITATION_DETAIL, fdata),
-          callAPI(GET_SAMPLE, fdata),
+          callAPI(GET_SAMPLE_REQUEST_DETAIL, fdata),
           callAPI(GET_TOTAL_SALES, fdata),
         ]);
 
@@ -70,21 +71,13 @@ export default function Datalist(props) {
       setGET_VISITATION_DETAIL(api2Value);
       setGET_SAMPLE_REQUEST(api3Value);
       setGET_TOTAL_SALES(api4Value);
+      Caltest();
     };
 
     fetchAPIs();
-  }, [props]);
+  }, [P_YEAR, P_USER ]);
 
-  useEffect(() => {
-    Calculate();
-  }, [
-    getGET_QUOTATION_DETAIL,
-    getGET_VISITATION_DETAIL,
-    getGET_SAMPLE_REQUEST,
-    getGET_TOTAL_SALES,
-  ]);
-
-  function Calculate() {
+  function Caltest() {
     setMyArray([]);
     for (let iMonth = 1; iMonth <= 12; iMonth++) {
       let MonthName = getMonthName(iMonth);
@@ -137,23 +130,44 @@ export default function Datalist(props) {
         TotalSales = Number(tt);
       });
 
-      //const formattedPrice = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+      const newItem = {
+        P_USER: P_USER,
+        P_YEAR: P_YEAR,
+        MonthName: MonthName,
+        VisitPlanned: VisitPlanned.length,
+        VisitCompleted: VisitCompleted.length,
+        CustomersPlanned: uniqueCustomer.length,
+        Repeatingcustomers: repeatCustomer,
+        SamplesRequested: SamplesRequested.length,
+        QuotationsCreated: valueQUOTATION.length,
+        QuotaiontoSale: QuotaiontoSale,
+        TotalSales: TotalSales,
+        // iMonth: iMonth,
+      };
+
+      console.log(newItem);
+
+      // addObjectToArray(newItem);
+
+      // console.log(myArray);
+
       dataReturn.push({
         P_USER: P_USER,
         P_YEAR: P_YEAR,
         iMonth: iMonth,
         MonthName: MonthName,
-        VisitPlanned: VisitPlanned.length.toLocaleString(),
-        VisitCompleted: VisitCompleted.length.toLocaleString(),
-        CustomersPlanned: uniqueCustomer.length.toLocaleString(),
-        Repeatingcustomers: repeatCustomer.toLocaleString(),
-        SamplesRequested: SamplesRequested.length.toLocaleString(),
-        QuotationsCreated: valueQUOTATION.length.toLocaleString(),
-        QuotaiontoSale: QuotaiontoSale.toLocaleString(),
-        TotalSales: TotalSales.toLocaleString(),
+        VisitPlanned: VisitPlanned.length,
+        VisitCompleted: VisitCompleted.length,
+        CustomersPlanned: uniqueCustomer.length,
+        Repeatingcustomers: repeatCustomer,
+        SamplesRequested: SamplesRequested.length,
+        QuotationsCreated: valueQUOTATION.length,
+        QuotaiontoSale: QuotaiontoSale,
+        TotalSales: TotalSales,
       });
     }
 
+    //console.log(myArray);
     setDatavalue(dataReturn);
     setIsLoaded(true);
   }
@@ -170,14 +184,15 @@ export default function Datalist(props) {
         </div>
       </div>
     );
-  } else if (P_USER !== "" && P_YEAR !== "") {
+  } else {
+    // return <>{getValue}</>;
     return (
       <>
         {datavalue.map((items, index) => (
           <div className="app-details-item">
             <div className="app-details-item-header">
               <h4>
-                {items.MonthName} - {P_YEAR}
+                {items.MonthName} - {P_YEAR} - {P_USER}
               </h4>
             </div>
             <div className="app-details-item-details">
@@ -213,37 +228,12 @@ export default function Datalist(props) {
                 <label className="txtheader">Quotaion to Sale :</label>
                 <label className="txtvalue">{items.QuotaiontoSale}</label>
               </div>
-              {/* 
+
               <br />
               <div>
                 <label className="txtheader">Total Sales :</label>
                 <label className="txtvalue">{items.TotalSales}</label>
-              </div> */}
-
-              <br />
-              <div>
-                <label className="txtheader">Net Items :</label>
-                <label className="txtvalue">....</label>
               </div>
-              <div>
-                <label className="txtheader">Loss Items :</label>
-                <label className="txtvalue">....</label>
-              </div>
-              <div>
-                <label className="txtheader">New Items :</label>
-                <label className="txtvalue">....</label>
-              </div>
-              <br />
-              <div>
-                <label className="txtheader">Monthly Sale :</label>
-                <label className="txtvalue">....</label>
-              </div>
-              <div>
-                <label className="txtheader">Monthly Target :</label>
-                <label className="txtvalue">....</label>
-              </div>
-
-              <br />
             </div>
           </div>
         ))}

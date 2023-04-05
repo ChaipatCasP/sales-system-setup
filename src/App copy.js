@@ -25,19 +25,16 @@ function App() {
     setSelYear(value);
   }
 
-  // const PlannedElements = productslist.map((product, index) => {
-  //   return (
-  //     <Datalist
-  //       key={index}
-  //       product={product}
-  //       P_YEAR={SelYear}
-  //       P_USER={SelStaffCode}
-  //     />
-  //   );
-  // });
-
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+  const PlannedElements = productslist.map((product, index) => {
+    return (
+      <Datalist
+        key={index}
+        product={product}
+        P_YEAR={SelYear}
+        P_USER={SelStaffCode}
+      />
+    );
+  });
 
   return (
     <div className="app">
@@ -64,7 +61,7 @@ function App() {
             </option>
           </select>
         </span>
-        {/* <span className="code">{w} *** {h}</span> */}
+        {/* <span className="code">Code</span> */}
         {/* <button className="circle-button"></button> */}
         <span className="code">
           <label>{p_user}</label>
@@ -81,13 +78,8 @@ function App() {
       <div className="app-content">
         <div className="app-content-main">
           <div className="app-content-main-Search">
-            <input
-              className=""
-              type="text"
-              placeholder="Search Staff Code"
-              onChange={(event) => setSearchText(event.target.value)}
-            />
-
+            <input className="" type="text" placeholder="Search Staff Code" onChange={(event) => setSearchText(event.target.value)}/>
+            
             <label>{searchText}</label>
           </div>
 
@@ -95,11 +87,7 @@ function App() {
         </div>
 
         <div className="app-content-box">
-          {/* <div className="app-content-box-item">{PlannedElements}</div>  */}
-
-          <div className="app-content-box-item">
-            <Datalist P_YEAR={SelYear} P_USER={SelStaffCode} />
-          </div>
+           <div className="app-content-box-item">{PlannedElements}</div> 
         </div>
       </div>
     </div>
