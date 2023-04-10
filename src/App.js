@@ -1,108 +1,63 @@
 import "./App.css";
-import productslist from "./Data";
-import StaffList from "./components/Stafflist/Stafflist";
-import Datalist from "./components/Datalist/Datalist";
 import React, { useEffect, useState } from "react";
+import PageStaff from "./components/PageStaff/PageStaff";
+import HeaderTopBar from "./components/HeaderTopBar/HeaderTopBar";
+import PageCustomer from "./components/PageCustomer/PageCustomer";
+// import { Routes, Route } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 
 function App() {
-  const [p_user, setP_user] = useState("F2304");
-  const [searchText, setSearchText] = useState("");
+  const [P_YEAR, setP_YEAR] = useState("2022");
+  const [P_USER, setP_USER] = useState("");
+  const [P_MONTH, setP_MONTH] = useState("");
 
-  const [SelStaffCode, setSelStaffCode] = useState("");
-  const [SelYear, setSelYear] = useState("2022");
-  // const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    //setSelYear("2022");
-    // setSelStaffCode("F2304");
-  }, []);
-
-  function onStaffClick(value) {
-    setSelStaffCode(value);
-  }
+  let router = useRoutes([
+    { path: "/", element: <PageStaff P_YEAR={P_YEAR} /> },
+    {
+      path: "/PageStaff",
+      element: <PageStaff P_YEAR={P_YEAR} />,
+    },
+    {
+      path: "/PageCustomer",
+      element: <PageCustomer P_YEAR={P_YEAR} />,
+    },
+    { path: "*", element: <Navigate to={"/"} /> },
+  ]);
 
   function onYearChange(value) {
-    setSelYear(value);
+    setP_YEAR(value);
+    localStorage.setItem("P_YEAR", value);
   }
 
-  // const PlannedElements = productslist.map((product, index) => {
-  //   return (
-  //     <Datalist
-  //       key={index}
-  //       product={product}
-  //       P_YEAR={SelYear}
-  //       P_USER={SelStaffCode}
-  //     />
-  //   );
-  // });
+  function onMonthChange(value) {
+    setP_MONTH(value);
+  }
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
+  useEffect(() => {
+    localStorage.setItem("P_USER", "F2304");
+    localStorage.setItem("P_COM", "JB");
+    setP_USER("F2304");
+
+    console.log(P_USER);
+  }, []);
 
   return (
-    <div className="app">
-      <div className="topbar">
-        <span className="name">
-          <select
-            className="dropdown-year"
-            onChange={(event) => onYearChange(event.target.value)}
-          >
-            <option className="dropdown-option" value={2019}>
-              2019
-            </option>
-            <option className="dropdown-option" value={2020}>
-              2020
-            </option>
-            <option className="dropdown-option" value={2021}>
-              2021
-            </option>
-            <option className="dropdown-option" value={2022} selected>
-              2022
-            </option>
-            <option className="dropdown-option" value={2023}>
-              2023
-            </option>
-          </select>
-        </span>
-        {/* <span className="code">{w} *** {h}</span> */}
-        {/* <button className="circle-button"></button> */}
-        <span className="code">
-          <label>{p_user}</label>
-          <br />
-          <label>Manager Name</label>
-        </span>
-      </div>
+    <>
+      {/* <div className="app">
+        <HeaderTopBar />
+        <PageCustomer/>
+        <section className="app-container"></section>
+        <PageStaff />
+      </div> */}
 
-      {/* <section className="app-section"></section> */}
-      <section className="app-container"></section>
-      {/* <input value={SelStaffCode} />
-      <input value={SelYear} /> */}
-
-      <div className="app-content">
-        <div className="app-content-main">
-          <div className="app-content-main-Search">
-            <input
-              className=""
-              type="text"
-              placeholder="Search Staff Code"
-              onChange={(event) => setSearchText(event.target.value)}
-            />
-
-            <label>{searchText}</label>
-          </div>
-
-          <StaffList onClick={onStaffClick} P_YEAR={SelYear} P_USER={p_user} />
-        </div>
-
-        <div className="app-content-box">
-          {/* <div className="app-content-box-item">{PlannedElements}</div>  */}
-
-          <div className="app-content-box-item">
-            <Datalist P_YEAR={SelYear} P_USER={SelStaffCode} />
-          </div>
-        </div>
-      </div>
-    </div>
+      <HeaderTopBar onYearChange={onYearChange} P_USER={P_USER} />
+      {router}
+      {/* <Routes>
+        <Route path="/" element={<PageStaff />} />
+        <Route path="PageStaff" element={<PageStaff />} />
+        <Route path="PageCustomer" element={<PageCustomer />} />
+      </Routes> */}
+    </>
   );
 }
 

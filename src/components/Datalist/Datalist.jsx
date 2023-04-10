@@ -2,9 +2,10 @@ import "./Datalist.css";
 import React, { useEffect, useState } from "react";
 import { environment } from "../../environment/environment";
 import loader from "../../components/assets/img/loader.gif";
+import { useNavigate } from "react-router-dom";
 
 export default function Datalist(props) {
-  const { P_YEAR, P_USER } = props;
+  const { P_YEAR, STAFFCODE } = props;
   const [datavalue, setDatavalue] = useState([]);
   const [myArray, setMyArray] = useState([]);
 
@@ -47,7 +48,7 @@ export default function Datalist(props) {
     setIsLoaded(false);
     var formdata = new FormData();
     formdata.append("P_COM", "JB");
-    formdata.append("P_USER", P_USER);
+    formdata.append("P_USER", STAFFCODE);
     formdata.append("P_KEY", "");
     formdata.append("P_YEAR", P_YEAR);
     const fdata = formdata;
@@ -139,7 +140,7 @@ export default function Datalist(props) {
 
       //const formattedPrice = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       dataReturn.push({
-        P_USER: P_USER,
+        P_USER: STAFFCODE,
         P_YEAR: P_YEAR,
         iMonth: iMonth,
         MonthName: MonthName,
@@ -158,6 +159,13 @@ export default function Datalist(props) {
     setIsLoaded(true);
   }
 
+  const navigate = useNavigate();
+
+  function onClickDetail(value) {
+    // alert(value);
+    navigate("/PageCustomer");
+  }
+
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isLoaded) {
@@ -170,11 +178,16 @@ export default function Datalist(props) {
         </div>
       </div>
     );
-  } else if (P_USER !== "" && P_YEAR !== "") {
+  } else if (STAFFCODE !== "" && P_YEAR !== "") {
     return (
       <>
         {datavalue.map((items, index) => (
-          <div className="app-details-item">
+          <div
+            className="app-details-item"
+            onClick={() => {
+              onClickDetail(items.MonthName);
+            }}
+          >
             <div className="app-details-item-header">
               <h4>
                 {items.MonthName} - {P_YEAR}
