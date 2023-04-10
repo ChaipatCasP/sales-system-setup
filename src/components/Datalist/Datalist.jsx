@@ -22,12 +22,14 @@ export default function Datalist(props) {
   const [getGET_VISITATION_DETAIL, setGET_VISITATION_DETAIL] = useState([]);
   const [getGET_SAMPLE_REQUEST, setGET_SAMPLE_REQUEST] = useState([]);
   const [getGET_TOTAL_SALES, setGET_TOTAL_SALES] = useState([]);
+  const [getGET_SALES_TARGET, setGET_SALES_TARGET] = useState([]);
 
   const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_QUOTATION_DETAIL = API_URL_WS_SALES_PLAN + "GET_QUOTATION_DETAIL";
   const GET_VISITATION_DETAIL = API_URL_WS_SALES_PLAN + "GET_VISITATION_DETAIL";
   const GET_SAMPLE = API_URL_WS_SALES_PLAN + "GET_SAMPLE_REQUEST_DETAIL";
   const GET_TOTAL_SALES = API_URL_WS_SALES_PLAN + "GET_TOTAL_SALES";
+  const GET_SALES_TARGET = API_URL_WS_SALES_PLAN + "GET_YEARLY_SALES_TARGET";
 
   function getMonthName(monthNumber) {
     const date = new Date();
@@ -54,23 +56,31 @@ export default function Datalist(props) {
     const fdata = formdata;
 
     const fetchAPIs = async () => {
-      const [api1Response, api2Response, api3Response, api4Response] =
-        await Promise.all([
-          callAPI(GET_QUOTATION_DETAIL, fdata),
-          callAPI(GET_VISITATION_DETAIL, fdata),
-          callAPI(GET_SAMPLE, fdata),
-          callAPI(GET_TOTAL_SALES, fdata),
-        ]);
+      const [
+        api1Response,
+        api2Response,
+        api3Response,
+        api4Response,
+        api5Response,
+      ] = await Promise.all([
+        callAPI(GET_QUOTATION_DETAIL, fdata),
+        callAPI(GET_VISITATION_DETAIL, fdata),
+        callAPI(GET_SAMPLE, fdata),
+        callAPI(GET_TOTAL_SALES, fdata),
+        callAPI(GET_SALES_TARGET, fdata),
+      ]);
 
       const api1Value = api1Response.result;
       const api2Value = api2Response.result;
       const api3Value = api3Response.result;
       const api4Value = api4Response.result;
+      const api5Value = api5Response.result;
 
       setGET_QUOTATION_DETAIL(api1Value);
       setGET_VISITATION_DETAIL(api2Value);
       setGET_SAMPLE_REQUEST(api3Value);
       setGET_TOTAL_SALES(api4Value);
+      setGET_SALES_TARGET(api5Value);
     };
 
     fetchAPIs();
@@ -83,6 +93,7 @@ export default function Datalist(props) {
     getGET_VISITATION_DETAIL,
     getGET_SAMPLE_REQUEST,
     getGET_TOTAL_SALES,
+    getGET_SALES_TARGET,
   ]);
 
   function Calculate() {
@@ -127,8 +138,9 @@ export default function Datalist(props) {
         (items, index) => (QuotaiontoSale += Number(items.TOTAL_SALES))
       );
 
+      //getMonthName(row.MONTH)
       let valueGET_TOTAL_SALES = getGET_TOTAL_SALES
-        .filter((row) => row.MONTH.includes(iMonth))
+        .filter((row) => getMonthName(row.MONTH).includes(MonthName))
         .map((items, index) => {
           return items.TOTAL;
         });
@@ -138,11 +150,32 @@ export default function Datalist(props) {
         TotalSales = Number(tt);
       });
 
+      let valMonthlySale = getGET_SALES_TARGET
+        .filter((row) => getMonthName(row.TARGET_MONTH).includes(MonthName))
+        .map((items, index) => {
+          return Number(items.TARGET_AMOUNT);
+        });
+
+      let MonthlySale = 0;
+      valMonthlySale.forEach((tt) => {
+        MonthlySale = Number(tt);
+      });
+
+      let valMonthlyTarget = getGET_SALES_TARGET
+        .filter((row) => getMonthName(row.TARGET_MONTH).includes(MonthName))
+        .map((items, index) => {
+          return Number(items.TOTAL_SALES);
+        });
+
+      let MonthlyTarget = 0;
+      valMonthlyTarget.forEach((tt) => {
+        MonthlyTarget = Number(tt);
+      });
+
       //const formattedPrice = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       dataReturn.push({
         P_USER: STAFFCODE,
         P_YEAR: P_YEAR,
-        iMonth: iMonth,
         MonthName: MonthName,
         VisitPlanned: VisitPlanned.length.toLocaleString(),
         VisitCompleted: VisitCompleted.length.toLocaleString(),
@@ -152,6 +185,8 @@ export default function Datalist(props) {
         QuotationsCreated: valueQUOTATION.length.toLocaleString(),
         QuotaiontoSale: QuotaiontoSale.toLocaleString(),
         TotalSales: TotalSales.toLocaleString(),
+        MonthlySale: MonthlySale.toLocaleString(),
+        MonthlyTarget: MonthlyTarget.toLocaleString(),
       });
     }
 
@@ -249,11 +284,11 @@ export default function Datalist(props) {
               <br />
               <div>
                 <label className="txtheader">Monthly Sale :</label>
-                <label className="txtvalue">....</label>
+                <label className="txtvalue">{items.MonthlySale}</label>
               </div>
               <div>
                 <label className="txtheader">Monthly Target :</label>
-                <label className="txtvalue">....</label>
+                <label className="txtvalue">{items.MonthlyTarget}</label>
               </div>
 
               <br />

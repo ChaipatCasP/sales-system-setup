@@ -4,6 +4,9 @@ import React, { useEffect, useState } from "react";
 import "./PageCustomer.css";
 import { environment } from "../../environment/environment";
 import moment from "moment/moment";
+import DropDownYear from "../DropDownYear/DropDownYear";
+import CustomerDetails from "./CustomerDetails/CustomerDetails";
+import CustomerDetailsByProduct from "./CustomerDetailsByProduct/CustomerDetailsByProduct";
 
 export default function PageCustomer(props) {
   const { P_YEAR } = props;
@@ -17,8 +20,8 @@ export default function PageCustomer(props) {
 
   const [searchText, setSearchText] = useState("");
 
-  const [CustomerCode, setCustomerCode] = useState("");
-  const [P_MONTH, setP_MONTH] = useState(false);
+  const [P_CUST_CODE, setP_CUST_CODE] = useState("");
+  const [P_MONTH, setP_MONTH] = useState("");
 
   async function callAPI(endpoint, data) {
     const response = await fetch(endpoint, {
@@ -29,68 +32,34 @@ export default function PageCustomer(props) {
     return await response.json();
   }
 
-  useEffect(() => {
-    var formdata = new FormData();
-    formdata.append("P_COM", P_COM);
-    formdata.append("P_USER", P_USER);
-    formdata.append("P_KEY", "");
-    formdata.append("P_YEAR", P_YEAR);
-    formdata.append("P_CUST_CODE", CustomerCode);
+  function onCustClick(value) {
+    setP_CUST_CODE(value);
 
-    const fdata = formdata;
-
-    const fetchAPIs = async () => {
-      const [api1Response] = await Promise.all([
-        callAPI(GET_APPOINTMENT_LIST, fdata),
-      ]);
-
-      const api1Value = api1Response.result;
-      setGET_APPOINTMENT_LIST(api1Value);
-    };
-
-    fetchAPIs();
-  }, [props, CustomerCode, P_MONTH]);
-
-  // useEffect(() => {
-  //   RenderReturnData();
-  // }, [getGET_APPOINTMENT_LIST]);
-
-  // function RenderReturnData() {
-  //   // console.log(getGET_APPOINTMENT_LIST);
-  // }
-
-  function onStaffClick(value) {
-    setCustomerCode(value);
-  }
-
-  function formatdate(dateString) {
-    const formattedDate = moment(dateString, "YYYYMMDD")
-      .format("DD-MMM-YYYY")
-      .toUpperCase();
-    return formattedDate;
-  }
-
-  function formattime(timeString) {
-    if (timeString !== "") {
-      let hours = timeString.substr(0, 2);
-      let minutes = timeString.substr(2);
-      const formattedTime = hours + ":" + minutes;
-      return formattedTime;
-    } else {
-      return "";
-    }
-  }
-
-  function checkConfirmed(txt) {
-    if (txt === "Y") {
-      return "Confirmed";
-    } else {
-      return "un-Confirmed";
-    }
+    setReturnData('');
+    setReturnDataLocation('');
+    setReturnDataRID('');
   }
 
   function onMonthChange(value) {
     setP_MONTH(value);
+
+    setReturnData('');
+    setReturnDataLocation('');
+    setReturnDataRID('');
+  }
+
+  const [ReturnData, setReturnData] = useState([]);
+  function onClickReturnData(value) {
+    setReturnData(value);
+  }
+  const [ReturnDataLocation, setReturnDataLocation] = useState([]);
+  function onClickReturnDataLocation(value) {
+    setReturnDataLocation(value);
+  }
+
+  const [ReturnDataRID, setReturnDataRID] = useState([]);
+  function onClickReturnRID(value) {
+    setReturnDataRID(value);
   }
 
   return (
@@ -107,115 +76,34 @@ export default function PageCustomer(props) {
           </div>
 
           <CustomerList
-            onClick={onStaffClick}
+            onClick={onCustClick}
             P_YEAR={P_YEAR}
-            P_USER={P_USER}
+            P_MONTH={P_MONTH}
             searchText={searchText}
           />
         </div>
 
         <div className="app-content-page-cus-center">
-          <select
-            className="dropdown-year"
-            onChange={(event) => onMonthChange(event.target.value)}
-          >
-            <option className="dropdown-option" value={""}></option>
-            <option className="dropdown-option" value={"JAN"}>
-              JAN
-            </option>
-            <option className="dropdown-option" value={"FEB"}>
-              FEB
-            </option>
-            <option className="dropdown-option" value={"MAR"}>
-              MAR
-            </option>
-            <option className="dropdown-option" value={"APR"}>
-              APR
-            </option>
-            <option className="dropdown-option" value={"MAY"}>
-              MAY
-            </option>
-            <option className="dropdown-option" value={"JUN"}>
-              JUN
-            </option>
-            <option className="dropdown-option" value={"JUL"}>
-              JUL
-            </option>
-            <option className="dropdown-option" value={"AUG"}>
-              AUG
-            </option>
-            <option className="dropdown-option" value={"SEP"}>
-              SEP
-            </option>
-            <option className="dropdown-option" value={"OCT"}>
-              OCT
-            </option>
-            <option className="dropdown-option" value={"NOV"}>
-              NOV
-            </option>
-            <option className="dropdown-option" value={"DEC"}>
-              DEC
-            </option>
-          </select>
+          <DropDownYear onMonthChange={onMonthChange} />
 
           <div className="page-cus-center-box">
-            {getGET_APPOINTMENT_LIST.map((items, index) => (
-              <div
-                className="center-item"
-                onClick={() => {
-                  // onClickDetail(items.MonthName);
-                }}
-              >
-                <div className="center-item-header">
-                  {/* <h4>12 - Jan - {P_YEAR} - TEST </h4> */}
-                  <h4>{formatdate(items.PLAN_DATE)}</h4>
-                  <h5>
-                    {formattime(items.PLAN_TIME_FROM)} -{" "}
-                    {formattime(items.PLAN_TIME_TO)}
-                  </h5>
-                </div>
-                <div className="center-item-detail">
-                  <div className="center-item-detail-bar">
-                    <div className="left">
-                      <label className="txtheader">Agenda :</label>
-                      <label className="txtvalue">{items.MEETING_TYPE}</label>
-                    </div>
-                    <div className="right">
-                      <label className="txtheader">
-                        {checkConfirmed(items.CONFIRM)}
-                      </label>
-                    </div>
-                  </div>
-                  <br />
-                  <div>
-                    <label className="txtheader">Check-in Time :</label>
-                    <label className="txtvalue">
-                      {formattime(items.CHECK_IN_TIME)}
-                    </label>
-                  </div>
-                  <div>
-                    <label className="txtheader">Check-out Time :</label>
-                    <label className="txtvalue">
-                      {formattime(items.CHECK_OUT_TIME)}
-                    </label>
-                  </div>
-                  <br />
-                  <div>
-                    <label className="txtheader">Location :</label>
-                    <label className="txtvalue">{items.LOCATION_ADDRESS}</label>
-                  </div>
-
-                  <br />
-                </div>
-              </div>
-            ))}
+            <CustomerDetails
+              P_YEAR={P_YEAR}
+              P_CUST_CODE={P_CUST_CODE}
+              P_MONTH={P_MONTH}
+              onClickReturnData={onClickReturnData}
+              onClickReturnDataLocation={onClickReturnDataLocation}
+              onClickReturnRID={onClickReturnRID}
+            />
           </div>
         </div>
 
         <div className="app-content-page-cus-right">
-          <h1>11</h1>
-
-          <div className="right-items"></div>
+          <CustomerDetailsByProduct
+            mtName={ReturnData}
+            location={ReturnDataLocation}
+            RID={ReturnDataRID}
+          />
         </div>
       </div>
     </>

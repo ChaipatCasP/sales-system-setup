@@ -1,0 +1,23 @@
+.items-offerings {
+    background-color: #f2f2f2;
+    color: #007acc;
+}
+
+.items-offerings-index {
+    border: solid;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: black;
+    color: white;
+}
+
+.items-offerings-details {
+    padding-top: 5px;
+    padding-left: 8px;
+    padding-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+}

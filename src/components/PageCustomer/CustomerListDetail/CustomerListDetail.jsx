@@ -46,7 +46,6 @@ export default function CustomerListDetail(props) {
 
       setGET_VISITATION_INFO(api1Value);
       setGET_APPOINTMENT_LIST(api2Value);
-      setIsLoaded(true);
     };
 
     fetchAPIs();
@@ -81,6 +80,7 @@ export default function CustomerListDetail(props) {
     });
 
     setGET_VISITATION_INFO(newArray1);
+    setIsLoaded(true);
   }
 
   if (error) {
@@ -95,7 +95,8 @@ export default function CustomerListDetail(props) {
         </div>
       </div>
     );
-  } else if (getGET_VISITATION_INFO.length > 0) {
+  } else 
+  if (getGET_VISITATION_INFO.length > 0) {
     return (
       <>
         {getGET_VISITATION_INFO.map((items, index) => (

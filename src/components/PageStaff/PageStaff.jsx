@@ -15,7 +15,6 @@ export default function PageStaff(prors) {
 
   return (
     <>
-      <h1>P_YEAR: {P_YEAR}</h1>
       <div className="app-content">
         <div className="app-content-main">
           <div className="app-content-main-Search">

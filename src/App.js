@@ -38,7 +38,6 @@ function App() {
     localStorage.setItem("P_COM", "JB");
     setP_USER("F2304");
 
-    console.log(P_USER);
   }, []);
 
   return (

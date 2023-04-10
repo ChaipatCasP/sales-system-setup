@@ -3,7 +3,7 @@ import { environment } from "../../../environment/environment";
 import CustomerListDetail from "../CustomerListDetail/CustomerListDetail";
 
 export default function CustomerList(props) {
-  const { onClick, P_YEAR, searchText } = props;
+  const { onClick, P_YEAR, P_MONTH, searchText } = props;
   const P_COM = localStorage.getItem("P_COM");
   const P_USER = localStorage.getItem("P_USER");
   const WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
@@ -103,7 +103,7 @@ export default function CustomerList(props) {
               <CustomerListDetail
                 P_YEAR={P_YEAR}
                 P_CUST_CODE={CustomerCode}
-                MONTH="OCT"
+                MONTH={P_MONTH}
               />
             </div>
           </div>
