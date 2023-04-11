@@ -5,6 +5,7 @@ import HeaderTopBar from "./components/HeaderTopBar/HeaderTopBar";
 import PageCustomer from "./components/PageCustomer/PageCustomer";
 // import { Routes, Route } from "react-router-dom";
 import { Navigate, useRoutes } from "react-router-dom";
+import PageLogin from "./components/PageLogin/PageLogin";
 
 function App() {
   const [P_YEAR, setP_YEAR] = useState("2022");
@@ -12,7 +13,11 @@ function App() {
   const [P_MONTH, setP_MONTH] = useState("");
 
   let router = useRoutes([
-    { path: "/", element: <PageStaff P_YEAR={P_YEAR} /> },
+    { path: "/", element: <PageLogin /> },
+    {
+      path: "/PageLogin",
+      element: <PageLogin />,
+    },
     {
       path: "/PageStaff",
       element: <PageStaff P_YEAR={P_YEAR} />,
@@ -34,10 +39,7 @@ function App() {
   }
 
   useEffect(() => {
-    localStorage.setItem("P_USER", "F2304");
-    localStorage.setItem("P_COM", "JB");
-    setP_USER("F2304");
-
+    setP_USER(localStorage.getItem("P_USER"));
   }, []);
 
   return (

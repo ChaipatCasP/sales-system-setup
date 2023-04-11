@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import StaffList from "../Stafflist/Stafflist";
 import Datalist from "../Datalist/Datalist";
+import { useNavigate } from "react-router-dom";
 
 export default function PageStaff(prors) {
-  const { P_YEAR} = prors;
+  const navigate = useNavigate();
+  const { P_YEAR } = prors;
   const [P_USER, setP_USER] = useState("F2304");
 
   const [searchText, setSearchText] = useState("");
@@ -12,6 +14,13 @@ export default function PageStaff(prors) {
   function onStaffClick(value) {
     setStaffCode(value);
   }
+
+  useEffect(() => {
+    const username = localStorage.getItem("P_USER");
+    if (username === "") {
+      navigate("/PageLogin");
+    }
+  }, []);
 
   return (
     <>
@@ -35,7 +44,7 @@ export default function PageStaff(prors) {
           {/* <div className="app-content-box-item">{PlannedElements}</div>  */}
 
           <div className="app-content-box-item">
-            <Datalist P_YEAR={P_YEAR} STAFFCODE={StaffCode}/>
+            <Datalist P_YEAR={P_YEAR} STAFFCODE={StaffCode} />
           </div>
         </div>
       </div>
