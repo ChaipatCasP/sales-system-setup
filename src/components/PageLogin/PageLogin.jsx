@@ -3,9 +3,13 @@ import { environment } from "../../environment/environment";
 import { useNavigate } from "react-router-dom";
 
 export default function PageLogin() {
-  const API_URL_WS_ERP = environment.baseUrl + "apip/WS_ERP/";
-  const WEB_BYPASS_LOGIN = API_URL_WS_ERP + "WEB_BYPASS_LOGIN";
+  const API_URL_WS_ERP = environment.baseUrl + "apip/WS_SALES_PLAN/";
+  const WEB_BYPASS_LOGIN = API_URL_WS_ERP + "GET_WEB_BYPASS_LOGIN";
   const navigate = useNavigate();
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString("en-US", {
+    year: "numeric",
+  });
 
   async function callAPI(endpoint, data) {
     const response = await fetch(endpoint, {
@@ -19,9 +23,20 @@ export default function PageLogin() {
   useEffect(() => {
     // อ่านค่า ID จาก URL
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("ID");
+    const ID = params.get("ID");
+    const P_USER = localStorage.getItem("P_USER");
 
-    BYPASS_LOGIN(id);
+    if (ID === null) {
+
+
+      if (P_USER === "") {
+      } else {
+        navigate("/PageStaff");
+      }
+    } else {
+      logout();
+      BYPASS_LOGIN(ID);
+    }
   }, []);
 
   const [apiResponse, setApiResponse] = useState([]);
@@ -35,7 +50,6 @@ export default function PageLogin() {
 
     const data = formdata;
     callAPI(endpoint, data).then((response) => {
-      //   console.log(response.flag);
       setApiResponse(response.result);
     });
   }
@@ -43,6 +57,14 @@ export default function PageLogin() {
   useEffect(() => {
     test();
   }, [apiResponse]);
+
+  function logout() {
+    localStorage.setItem("P_COM", "");
+    localStorage.setItem("P_USER", "");
+    localStorage.setItem("STAFFCODE", "");
+    localStorage.setItem("P_MONTH", "");
+    localStorage.setItem("P_YEAR", "");
+  }
 
   function test() {
     let arrUSERNAME = apiResponse.map((items, index) => {
@@ -63,15 +85,15 @@ export default function PageLogin() {
       COMPANY = String(tt);
     });
 
-    console.log(USERNAME);
     localStorage.setItem("P_COM", COMPANY);
     localStorage.setItem("P_USER", USERNAME);
+    localStorage.setItem("P_YEAR", formattedDate);
 
     const username = localStorage.getItem("P_USER");
 
     if (username !== "") {
       navigate("/PageStaff");
-    } 
+    }
   }
 
   return <>Login</>;

@@ -6,18 +6,24 @@ import { useNavigate } from "react-router-dom";
 export default function PageStaff(prors) {
   const navigate = useNavigate();
   const { P_YEAR } = prors;
-  const [P_USER, setP_USER] = useState("F2304");
 
   const [searchText, setSearchText] = useState("");
   const [StaffCode, setStaffCode] = useState("");
 
   function onStaffClick(value) {
     setStaffCode(value);
+    localStorage.setItem("STAFFCODE", value);
+    document.getElementById("datalist").style.display = "";
+  }
+
+  function onChangeSearch(value){
+    document.getElementById("datalist").style.display = "none";
+    setSearchText(value);
   }
 
   useEffect(() => {
-    const username = localStorage.getItem("P_USER");
-    if (username === "") {
+    const P_USER = localStorage.getItem("P_USER");
+    if (P_USER === "") {
       navigate("/PageLogin");
     }
   }, []);
@@ -31,19 +37,21 @@ export default function PageStaff(prors) {
               className=""
               type="text"
               placeholder="Search Staff Code"
-              onChange={(event) => setSearchText(event.target.value)}
+              onChange={(event) => onChangeSearch(event.target.value)}
             />
-
-            <label>{searchText}</label>
           </div>
 
-          <StaffList onClick={onStaffClick} P_YEAR={P_YEAR} P_USER={P_USER} />
+          <StaffList
+            onClick={onStaffClick}
+            P_YEAR={P_YEAR}
+            searchText={searchText}
+          />
         </div>
 
         <div className="app-content-box">
           {/* <div className="app-content-box-item">{PlannedElements}</div>  */}
 
-          <div className="app-content-box-item">
+          <div className="app-content-box-item" id="datalist">
             <Datalist P_YEAR={P_YEAR} STAFFCODE={StaffCode} />
           </div>
         </div>

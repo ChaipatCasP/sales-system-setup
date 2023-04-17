@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "./Stafflistdetails.css";
 import { environment } from "../../../environment/environment";
 
-export default function StaffListDetails(props) {
-  const { P_USER, P_YEAR } = props;
+export default function CustomerListDetail(props) {
+  const { P_CUST_CODE, P_YEAR } = props;
+  const P_COM = localStorage.getItem("P_COM");
+  const P_USER = localStorage.getItem("P_USER");
+
   const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
-  const GET_VISITATION_INFO = API_URL_WS_SALES_PLAN + "GET_VISITATION_INFO";
+  const GET_VISITATION_INFO =
+    API_URL_WS_SALES_PLAN + "GET_VISITATION_INFO_BY_CUST";
 
   useEffect(() => {
-    FN_GET_VISITATION_INFO();    
+    FN_GET_VISITATION_INFO();
   }, [props]);
 
   const [apiResponse, setApiResponse] = useState([]);
@@ -24,21 +27,17 @@ export default function StaffListDetails(props) {
   function FN_GET_VISITATION_INFO() {
     var formdata = new FormData();
     const endpoint = GET_VISITATION_INFO;
-    formdata.append("P_COM", "JB");
+    formdata.append("P_COM", P_COM);
     formdata.append("P_USER", P_USER);
     formdata.append("P_KEY", "");
     formdata.append("P_YEAR", P_YEAR);
+    formdata.append("P_CUST_CODE", P_CUST_CODE);
+    formdata.append("P_STAFF_CODE", P_USER);
 
     const data = formdata;
     callAPI(endpoint, data).then((response) => {
       setApiResponse(response.result);
     });
-
-    // console.log("-----------------------");
-    // for (const [key, value] of data) {
-    //   console.log(key + ":" + value);
-    // }
-    // console.log("FN_GET_VISITATION_INFO");
   }
 
   if (apiResponse.length !== 0) {
@@ -46,16 +45,18 @@ export default function StaffListDetails(props) {
       <>
         {apiResponse.map((items, index) => (
           <div className="app-stafflist" key={index}>
-            <div>Total Customers :{items.TOTAL_CUSTOMERS}</div>
-            <div>Planned Customers :{items.PLANNED_CUSTOMERS}</div>
-            <br />
-            <div>Visit Planned : {items.VISIT_PLANNED}</div>
-            <div>Visit Completed : {items.VISIT_COMPLETED}</div>
+            <div>Visit Planned : {items.VISIT_PLAN}</div>
+            <div>Visit Completed : {items.TOTAL_COMPLETE_VISIT}</div>
             <br />
             <div>Sample Requested : {items.SAMPLE_REQUESTED}</div>
-            <div>Quotation Created : {items.QUOTATION_CREATED}</div>
+            <div>Sample without Feedback : {items.SAMPLE_WITH_NO_FEEDBACK}</div>
             <br />
-            <div>Total Sales : {items.TOTAL_SALES}</div>
+            <div>Active Quotation :{items.QUOTATION_ACTIVE}</div>
+            <div>Quotation without Feedback : {items.QUOTATION_CREATED}</div>
+            <br />
+            <div>Quotation without Sale : N/A</div>
+
+            <div>Total Sales : {Number(items.TOTAL_SALES).toLocaleString()}</div>
           </div>
         ))}
       </>

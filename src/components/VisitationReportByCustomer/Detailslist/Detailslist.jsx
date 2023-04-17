@@ -1,13 +1,11 @@
-import "./Datalist.css";
+import "./Detailslist.css";
 import React, { useEffect, useState } from "react";
-import { environment } from "../../environment/environment";
-import loader from "../../components/assets/img/loader.gif";
+import { environment } from "../../../environment/environment";
+import loader from "../../../components/assets/img/loader.gif";
 import { useNavigate } from "react-router-dom";
 
-export default function Datalist(props) {
-  const { P_YEAR, STAFFCODE } = props;
-  const P_COM = localStorage.getItem("P_COM");
-  const P_USER = localStorage.getItem("P_USER");
+export default function Detailslist(props) {
+  const { P_YEAR, CUSTOMERCODE } = props;
   const [datavalue, setDatavalue] = useState([]);
   const [myArray, setMyArray] = useState([]);
 
@@ -33,6 +31,13 @@ export default function Datalist(props) {
   const GET_TOTAL_SALES = API_URL_WS_SALES_PLAN + "GET_TOTAL_SALES";
   const GET_SALES_TARGET = API_URL_WS_SALES_PLAN + "GET_YEARLY_SALES_TARGET";
 
+  const GET_SAMPLE_REQUEST_CNT_BY_CUST =
+    API_URL_WS_SALES_PLAN + "GET_SAMPLE_REQUEST_CNT_BY_CUST";
+  const GET_VISITATION_INFO_BY_CUST =
+    API_URL_WS_SALES_PLAN + "GET_VISITATION_INFO_BY_CUST";
+  const GET_QUOTATION_CNT_BY_CUSTOMER =
+    API_URL_WS_SALES_PLAN + "GET_QUOTATION_CNT_BY_CUSTOMER";
+
   function getMonthName(monthNumber) {
     const date = new Date();
     date.setMonth(monthNumber - 1);
@@ -51,20 +56,11 @@ export default function Datalist(props) {
   useEffect(() => {
     setIsLoaded(false);
     var formdata = new FormData();
-    formdata.append("P_COM", P_COM);
-    formdata.append("P_USER", P_USER);
+    formdata.append("P_COM", "JB");
+    formdata.append("P_USER", CUSTOMERCODE);
     formdata.append("P_KEY", "");
     formdata.append("P_YEAR", P_YEAR);
     const fdata = formdata;
-
-    var formdata2 = new FormData();
-    formdata2.append("P_COM", P_COM);
-    formdata2.append("P_USER", P_USER);
-    formdata2.append("P_KEY", "");
-    formdata2.append("P_YEAR", P_YEAR);
-    formdata2.append("P_STAFF_CODE", STAFFCODE);
-    formdata2.append("P_CUST_CODE", "");
-    const fdata2 = formdata2;
 
     const fetchAPIs = async () => {
       const [
@@ -75,9 +71,9 @@ export default function Datalist(props) {
         api5Response,
       ] = await Promise.all([
         callAPI(GET_QUOTATION_DETAIL, fdata),
-        callAPI(GET_VISITATION_DETAIL, fdata2),
+        callAPI(GET_VISITATION_DETAIL, fdata),
         callAPI(GET_SAMPLE, fdata),
-        callAPI(GET_TOTAL_SALES, fdata2),
+        callAPI(GET_TOTAL_SALES, fdata),
         callAPI(GET_SALES_TARGET, fdata),
       ]);
 
@@ -185,7 +181,7 @@ export default function Datalist(props) {
 
       //const formattedPrice = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       dataReturn.push({
-        P_USER: STAFFCODE,
+        P_USER: CUSTOMERCODE,
         P_YEAR: P_YEAR,
         MonthName: MonthName,
         VisitPlanned: VisitPlanned.length.toLocaleString(),
@@ -206,11 +202,9 @@ export default function Datalist(props) {
   }
 
   const navigate = useNavigate();
-
   function onClickDetail(value) {
-    // alert(value);
-    localStorage.setItem("P_MONTH", value);
-    navigate("/PageCustomer");
+    // localStorage.setItem("P_MONTH", value);
+    // navigate("/PageCustomer");
   }
 
   if (error) {
@@ -225,7 +219,7 @@ export default function Datalist(props) {
         </div>
       </div>
     );
-  } else if (STAFFCODE !== "" && P_YEAR !== "") {
+  } else if (CUSTOMERCODE !== "" && P_YEAR !== "") {
     return (
       <>
         {datavalue.map((items, index) => (
@@ -250,7 +244,7 @@ export default function Datalist(props) {
                 <label className="txtheader">Visit Completed :</label>
                 <label className="txtvalue">{items.VisitCompleted}</label>
               </div>
-              <br />
+              {/* <br />
               <div>
                 <label className="txtheader">Customers Planned :</label>
                 <label className="txtvalue">{items.CustomersPlanned}</label>
@@ -258,7 +252,7 @@ export default function Datalist(props) {
               <div>
                 <label className="txtheader">Repeating customers :</label>
                 <label className="txtvalue">{items.Repeatingcustomers}</label>
-              </div>
+              </div> */}
 
               <br />
 
@@ -274,12 +268,16 @@ export default function Datalist(props) {
                 <label className="txtheader">Quotaion to Sale :</label>
                 <label className="txtvalue">{items.QuotaiontoSale}</label>
               </div>
-              {/* 
+
               <br />
               <div>
                 <label className="txtheader">Total Sales :</label>
                 <label className="txtvalue">{items.TotalSales}</label>
-              </div> */}
+              </div>
+              <div>
+                <label className="txtheader">Monthly Sale :</label>
+                <label className="txtvalue">..........</label>
+              </div>
 
               <br />
               <div>
@@ -287,13 +285,23 @@ export default function Datalist(props) {
                 <label className="txtvalue">....</label>
               </div>
               <div>
+                <label className="txtheader">New Items :</label>
+                <label className="txtvalue">N/A</label>
+              </div>
+              <br />
+              <div>
                 <label className="txtheader">Loss Items :</label>
                 <label className="txtvalue">N/A</label>
               </div>
               <div>
-                <label className="txtheader">New Items :</label>
+                <label className="txtheader">Loss Recovered :</label>
                 <label className="txtvalue">N/A</label>
               </div>
+              <div>
+                <label className="txtheader">Accumlated Loss Items :</label>
+                <label className="txtvalue">N/A</label>
+              </div>
+
               <br />
               <div>
                 <label className="txtheader">Monthly Sale :</label>

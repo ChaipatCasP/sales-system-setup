@@ -1,51 +1,33 @@
-import { useLocation } from "react-router-dom";
 import CustomerList from "./CustomerList/CustomerList";
 import React, { useEffect, useState } from "react";
 import "./PageCustomer.css";
-import { environment } from "../../environment/environment";
-import moment from "moment/moment";
 import DropDownYear from "../DropDownYear/DropDownYear";
 import CustomerDetails from "./CustomerDetails/CustomerDetails";
 import CustomerDetailsByProduct from "./CustomerDetailsByProduct/CustomerDetailsByProduct";
 
 export default function PageCustomer(props) {
   const { P_YEAR } = props;
-  const P_COM = localStorage.getItem("P_COM");
-  const P_USER = localStorage.getItem("P_USER");
-
-  const WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
-  const GET_APPOINTMENT_LIST = WS_SALES_PLAN + "GET_APPOINTMENT_LIST_BY_CUST";
-
-  const [getGET_APPOINTMENT_LIST, setGET_APPOINTMENT_LIST] = useState([]);
-
+  const STAFFCODE = localStorage.getItem("STAFFCODE");
   const [searchText, setSearchText] = useState("");
-
   const [P_CUST_CODE, setP_CUST_CODE] = useState("");
   const [P_MONTH, setP_MONTH] = useState("");
 
-  async function callAPI(endpoint, data) {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      body: data,
-      redirect: "follow",
-    });
-    return await response.json();
-  }
+  useEffect(() => {
+    setP_CUST_CODE("");
+  }, [props]);
 
   function onCustClick(value) {
     setP_CUST_CODE(value);
-
-    setReturnData('');
-    setReturnDataLocation('');
-    setReturnDataRID('');
+    setReturnData("");
+    setReturnDataLocation("");
+    setReturnDataRID("");
   }
 
   function onMonthChange(value) {
     setP_MONTH(value);
-
-    setReturnData('');
-    setReturnDataLocation('');
-    setReturnDataRID('');
+    setReturnData("");
+    setReturnDataLocation("");
+    setReturnDataRID("");
   }
 
   const [ReturnData, setReturnData] = useState([]);
@@ -64,6 +46,21 @@ export default function PageCustomer(props) {
 
   return (
     <>
+      <div className="viewingfor">
+        <div>Viewing for :</div>
+        <div>
+          <div className="app-staff-header" id={"header" + STAFFCODE}>
+            <div className="app-stafflist-header-circle">
+              <div className="circle"></div>
+            </div>
+
+            <div className="app-staff-header-content">
+              <div>{STAFFCODE}</div>
+              <div>{STAFFCODE}</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="app-content-page-cus">
         <div className="app-content-page-cus-left">
           <div className="app-content-page-cus-left-Search">
@@ -84,8 +81,11 @@ export default function PageCustomer(props) {
         </div>
 
         <div className="app-content-page-cus-center">
-          <DropDownYear onMonthChange={onMonthChange} />
-
+          <div className="DropDownYear">
+            <DropDownYear onMonthChange={onMonthChange} />
+          </div>
+          <br />
+          <br />
           <div className="page-cus-center-box">
             <CustomerDetails
               P_YEAR={P_YEAR}
@@ -103,6 +103,7 @@ export default function PageCustomer(props) {
             mtName={ReturnData}
             location={ReturnDataLocation}
             RID={ReturnDataRID}
+            P_YEAR={P_YEAR}
           />
         </div>
       </div>

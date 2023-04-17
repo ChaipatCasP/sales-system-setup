@@ -33,7 +33,7 @@ export default function CustomerDetails(props) {
 
   const [getGET_APPOINTMENT_LIST, setGET_APPOINTMENT_LIST] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => {    
     setIsLoaded(false);
     var formdata = new FormData();
     formdata.append("P_COM", P_COM);
@@ -56,11 +56,13 @@ export default function CustomerDetails(props) {
 
     if (P_CUST_CODE !== "") {
       fetchAPIs();
-    }else{
-      setGET_APPOINTMENT_LIST([])
+    } else {
+      setGET_APPOINTMENT_LIST([]);
       setIsLoaded(true);
     }
-  }, [props]);
+  }, [P_CUST_CODE, P_MONTH]);
+
+  
 
   function formatdate(dateString) {
     const formattedDate = moment(dateString, "YYYYMMDD")
@@ -91,6 +93,8 @@ export default function CustomerDetails(props) {
   function checkStatus(txt) {
     if (txt === "V") {
       return walking;
+    } else if (txt === "visit") {
+      return walking;
     } else if (txt === "C") {
       return calling;
     } else {
@@ -104,7 +108,15 @@ export default function CustomerDetails(props) {
     border: "none",
   };
 
-  function onclick(CONTACT_NAME, CONTACT_NUMBER, location, RID) {
+  function changeBackgroundColor() {
+    const elements_header = document.querySelectorAll(".center-item");
+    elements_header.forEach((element) => {
+      element.style.backgroundColor = "";
+    });    
+  }
+
+  function onclick(CONTACT_NAME, CONTACT_NUMBER, location, RID,ID) {
+    changeBackgroundColor();
     onClickReturnData(CONTACT_NAME);
 
     if (CONTACT_NUMBER === "") {
@@ -114,6 +126,7 @@ export default function CustomerDetails(props) {
     }
     onClickReturnDataLocation(location);
     onClickReturnRID(RID);
+    document.getElementById(ID).style.backgroundColor = "#f2f2f2";
   }
 
   if (error) {
@@ -135,13 +148,16 @@ export default function CustomerDetails(props) {
           .filter((row) => formatdate(row.PLAN_DATE).includes(P_MONTH))
           .map((items, index) => (
             <div
+              id={index + "_" + items.PLAN_DATE}
               className="center-item"
+              key={index}
               onClick={(event) =>
                 onclick(
                   items.CONTACT_NAME,
                   items.CONTACT_NUMBER,
                   items.LOCATION_ADDRESS,
-                  items.PLAN_ID
+                  items.PLAN_ID,
+                  index + "_" + items.PLAN_DATE
                 )
               }
             >
@@ -207,6 +223,12 @@ export default function CustomerDetails(props) {
               </div>
             </div>
           ))}
+      </>
+    );
+  } else if (getGET_APPOINTMENT_LIST.length === 0) {
+    return (
+      <>
+        <label style={{ paddingLeft: "30px" }}>No data</label>{" "}
       </>
     );
   }

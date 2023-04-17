@@ -9,12 +9,10 @@ function App() {
   const [searchText, setSearchText] = useState("");
 
   const [SelStaffCode, setSelStaffCode] = useState("");
-  const [SelYear, setSelYear] = useState("2022");
+  const [SelYear, setSelYear] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    //setSelYear("2022");
-    // setSelStaffCode("F2304");
   }, []);
 
   function onStaffClick(value) {
@@ -53,7 +51,7 @@ function App() {
             <option className="dropdown-option" value={2021}>
               2021
             </option>
-            <option className="dropdown-option" value={2022} selected>
+            <option className="dropdown-option" value={2022}>
               2022
             </option>
             <option className="dropdown-option" value={2023}>

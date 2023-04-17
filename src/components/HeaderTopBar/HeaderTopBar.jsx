@@ -6,6 +6,10 @@ export default function HeaderTopBar(props) {
   const P_USER = localStorage.getItem("P_USER");
   const location = useLocation();
 
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleString('en-US', { year: 'numeric' });
+  const selectedOptionId = formattedDate;
+
   // let message;
   // if (location.pathname === "/PageCustomer") {
   //   message = (
@@ -62,6 +66,7 @@ export default function HeaderTopBar(props) {
           <select
             className="dropdown-year"
             onChange={(event) => onYearChange(event.target.value)}
+            defaultValue={selectedOptionId}
           >
             <option className="dropdown-option" value={2019}>
               2019
@@ -72,7 +77,7 @@ export default function HeaderTopBar(props) {
             <option className="dropdown-option" value={2021}>
               2021
             </option>
-            <option className="dropdown-option" value={2022} selected>
+            <option className="dropdown-option" value={2022}>
               2022
             </option>
             <option className="dropdown-option" value={2023}>

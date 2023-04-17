@@ -8,12 +8,15 @@ export default function CustomerList(props) {
   const P_USER = localStorage.getItem("P_USER");
   const WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_CUSTOMER_LIST = WS_SALES_PLAN + "GET_CUSTOMER_LIST_BY_SALES";
-  const GET_VISITATION_INFO = WS_SALES_PLAN + "GET_VISITATION_INFO_BY_CUST";
   const [CustomerCode, setCustomerCode] = useState("");
 
   useEffect(() => {
     GET_CUSTOMER();
   }, [props]);
+
+  useEffect(() => {
+    changeBackgroundColor();
+  }, [P_YEAR]);
 
   async function callAPI(endpoint, data) {
     const response = await fetch(endpoint, {

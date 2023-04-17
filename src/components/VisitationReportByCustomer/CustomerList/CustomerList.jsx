@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { environment } from "../../environment/environment";
-import "./Stafflist.css";
-import StaffListDetails from "./Stafflistdetails/Stafflistdetails";
+import { environment } from "../../../environment/environment";
+import CustomerListDetail from "./CustomerListDetail";
 
-export default function StaffList(props) {
+export default function CustomerList(props) {
   const { onClick, P_YEAR, searchText } = props;
   const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const P_COM = localStorage.getItem("P_COM");
   const P_USER = localStorage.getItem("P_USER");
 
   useEffect(() => {
-    GET_STAFF_LIST();
+    GET_CUSTOMER_LIST_BY_SALES();
   }, [props]);
 
   const [apiResponse, setApiResponse] = useState([]);
@@ -23,34 +22,28 @@ export default function StaffList(props) {
     return await response.json();
   }
 
-  function GET_STAFF_LIST() {
-    const endpoint = API_URL_WS_SALES_PLAN + "GET_STAFF_LIST";
+  function GET_CUSTOMER_LIST_BY_SALES() {
+    const endpoint = API_URL_WS_SALES_PLAN + "GET_CUSTOMER_LIST_BY_SALES";
     var formdata = new FormData();
     formdata.append("P_COM", P_COM);
     formdata.append("P_USER", P_USER);
     formdata.append("P_KEY", "");
+    formdata.append("P_YEAR", P_YEAR);
 
     const data = formdata;
     callAPI(endpoint, data).then((response) => {
       setApiResponse(response.result);
     });
-
-    // console.log('-----------------------');
-    // for (const [key, value] of data) {
-    //   console.log(key +':'+value);
-    // }
-    // console.log('FN_GET_STAFF_LIST');
   }
 
-  const [getStaffListDetails, setStaffListDetails] = useState("");
-
-  function onStaffClick(staffcode) {
+  const [getCustomerListDetails, setCustomerListDetails] = useState("");
+  function onCustomerClick(customercode) {
     changeBackgroundColor();
-    changeDisplay(staffcode);
-    onClick(staffcode);
+    changeDisplay(customercode);
+     onClick(customercode);
 
-    const txt = <StaffListDetails P_USER={staffcode} P_YEAR={P_YEAR} />;
-    setStaffListDetails(txt);
+    const txt = <CustomerListDetail P_CUST_CODE={customercode} P_YEAR={P_YEAR} />;
+    setCustomerListDetails(txt);
   }
 
   function changeBackgroundColor() {
@@ -79,36 +72,36 @@ export default function StaffList(props) {
     <>
       {apiResponse
         .filter((txt) => {
-          return txt.STAFF_CODE.includes(searchText);
+          return txt.CUST_CODE.includes(searchText);
         })
         .map((items, index) => (
           <div
             className="app-stafflist"
             onClick={() => {
-              onStaffClick(items.STAFF_CODE);
+              onCustomerClick(items.CUST_CODE);
             }}
-            id={items.STAFF_CODE}
+            id={items.CUST_CODE}
             key={index}
           >
             <div
               className="app-stafflist-header"
-              id={"header" + items.STAFF_CODE}
+              id={"header" + items.CUST_CODE}
             >
               <div className="app-stafflist-header-circle">
                 <div className="circle"></div>
               </div>
 
               <div className="app-stafflist-header-content">
-                <div>{items.STAFF_CODE}</div>
-                <div>{items.STAFF_NAME}</div>
+                <div>{items.CUST_CODE}</div>
+                <div>{items.CUST_NAME}</div>
               </div>
             </div>
             <div
               className="app-stafflist-details"
-              id={"details" + items.STAFF_CODE}
+              id={"details" + items.CUST_CODE}
               style={{ display: "none" }}
             >
-              {getStaffListDetails}
+              {getCustomerListDetails}
             </div>
           </div>
         ))}

@@ -4,13 +4,15 @@ import "./CustomerDetailsByProduct.css";
 import loader from "../../../components/assets/img/loader.gif";
 
 export default function CustomerDetailsByProduct(props) {
-  const { mtName, location, RID } = props;
+  const { mtName, location, RID, P_YEAR } = props;
   const P_COM = localStorage.getItem("P_COM");
   const P_USER = localStorage.getItem("P_USER");
   const WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_PRODUCTS = WS_SALES_PLAN + "GET_PRODUCTS_BY_SALES_PLAN_RID";
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [txtmtName, setmtName] = useState("");
+  const [txtlocation, setlocation] = useState("");
 
   async function callAPI(endpoint, data) {
     const response = await fetch(endpoint, {
@@ -21,9 +23,16 @@ export default function CustomerDetailsByProduct(props) {
     return await response.json();
   }
 
-  const [getGET_PRODUCTS, setGET_PRODUCTS] = useState([]);
-
   useEffect(() => {
+    setGET_PRODUCTS([]);
+    setmtName("");
+    setlocation("");
+  }, [P_YEAR]);
+
+  const [getGET_PRODUCTS, setGET_PRODUCTS] = useState([]);
+  useEffect(() => {
+    setmtName(mtName);
+    setlocation(location);
     setIsLoaded(false);
     var formdata = new FormData();
     formdata.append("P_COM", P_COM);
@@ -47,7 +56,7 @@ export default function CustomerDetailsByProduct(props) {
       setGET_PRODUCTS([]);
       setIsLoaded(true);
     }
-  }, [props]);
+  }, [RID]);
 
   const underline = {
     textDecorationLine: "underline",
@@ -89,9 +98,9 @@ export default function CustomerDetailsByProduct(props) {
           }}
         ></div>
         <div className="" style={{ paddingLeft: "5px", paddingTop: "10px" }}>
-          <label>Meeting with :</label> <label>{mtName}</label>
+          <label>Meeting with :</label> <label>{txtmtName}</label>
           <br />
-          <label>Location :</label> <label>{location}</label>
+          <label>Location :</label> <label>{txtlocation}</label>
         </div>
 
         <div className="app-content-page-cus-right-header">
@@ -143,9 +152,9 @@ export default function CustomerDetailsByProduct(props) {
           }}
         ></div>
         <div className="" style={{ paddingLeft: "5px", paddingTop: "10px" }}>
-          <label>Meeting with :</label> <label>{mtName}</label>
+          <label>Meeting with :</label> <label>{txtmtName}</label>
           <br />
-          <label>Location :</label> <label>{location}</label>
+          <label>Location :</label> <label>{txtlocation}</label>
         </div>
 
         <div className="app-content-page-cus-right-header">
@@ -170,7 +179,7 @@ export default function CustomerDetailsByProduct(props) {
         ></div>
         <div className="" style={{ paddingLeft: "5px", paddingTop: "10px" }}>
           {getGET_PRODUCTS.map((items, index) => (
-            <div className="items-offerings">
+            <div className="items-offerings" key={index}>
               <div>
                 <label className="items-offerings-index">{index + 1}</label>
               </div>

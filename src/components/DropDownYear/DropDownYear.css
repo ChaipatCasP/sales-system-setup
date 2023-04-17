@@ -1,0 +1,15 @@
+.dropdown-month {
+    margin-top: 8px;
+    margin-left: 10px;
+    width: 180px;
+    height: 30px;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #007acc;
+    color: white;
+  }
+
+  .dropdown-option{
+    background-color: white;
+    color: black;
+  }

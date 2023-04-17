@@ -7,12 +7,21 @@ export default function CustomerListDetail(props) {
   const { P_YEAR, P_CUST_CODE, MONTH } = props;
   const P_COM = localStorage.getItem("P_COM");
   const P_USER = localStorage.getItem("P_USER");
+  const P_STAFF_CODE = localStorage.getItem("STAFFCODE");
   const WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_VISITATION_INFO = WS_SALES_PLAN + "GET_VISITATION_INFO_BY_CUST";
   const GET_APPOINTMENT_LIST = WS_SALES_PLAN + "GET_APPOINTMENT_LIST_BY_CUST";
 
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+
+  function formatdate(dateString) {
+    const formattedDate = moment(dateString, "YYYYMMDD")
+      .format("DD-MMM-YYYY")
+      .toUpperCase();
+    return formattedDate;
+  }
 
   async function callAPI(endpoint, data) {
     const response = await fetch(endpoint, {
@@ -33,6 +42,8 @@ export default function CustomerListDetail(props) {
     formdata.append("P_KEY", "");
     formdata.append("P_YEAR", P_YEAR);
     formdata.append("P_CUST_CODE", P_CUST_CODE);
+    formdata.append("P_STAFF_CODE", P_STAFF_CODE);
+    
     const fdata = formdata;
 
     const fetchAPIs = async () => {
@@ -51,12 +62,6 @@ export default function CustomerListDetail(props) {
     fetchAPIs();
   }, [props]);
 
-  function formatdate(dateString) {
-    const formattedDate = moment(dateString, "YYYYMMDD")
-      .format("DD-MMM-YYYY")
-      .toUpperCase();
-    return formattedDate;
-  }
 
   useEffect(() => {
     Calculate();
@@ -83,24 +88,24 @@ export default function CustomerListDetail(props) {
     setIsLoaded(true);
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <img className="loaderImage" src={loader} alt="loader" />
-          </div>
-        </div>
-      </div>
-    );
-  } else 
-  if (getGET_VISITATION_INFO.length > 0) {
+  // if (error) {
+  //   return <div>Error: {error.message}</div>;
+  // } else if (!isLoaded) {
+  //   return (
+  //     <div className="container">
+  //       <div className="row">
+  //         <div className="col-12">
+  //           <img className="loaderImage" src={loader} alt="loader" />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // } else 
+  //  if (getGET_VISITATION_INFO.length > 0) {
     return (
       <>
         {getGET_VISITATION_INFO.map((items, index) => (
-          <div className="">
+          <div className="" key={{index}}>
             <div className="">
               <label>Visits Planned for {P_YEAR} : </label>
               <label>{items.VISIT_PLAN}</label>
@@ -146,5 +151,5 @@ export default function CustomerListDetail(props) {
         ))}
       </>
     );
-  }
+  //  }
 }

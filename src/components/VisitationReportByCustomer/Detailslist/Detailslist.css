@@ -1,0 +1,37 @@
+.txtvalue {
+    font-weight: 500;
+    text-decoration-line: underline;
+}
+
+.app-details-item {
+    border: 1px solid gray;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    width: 230px;
+    height: 510px;;
+    color: #4880a5;
+}
+
+.app-details-item-header {
+    border-bottom: 1px solid gray;
+    height: 30px;
+}
+
+.app-details-item-header h4 {
+    text-align: center;
+}
+
+.app-details-item-details div {
+    padding-top: 2px;
+    padding-left: 10px;
+}
+
+.txtheader {
+    padding-right: 10px;
+}
