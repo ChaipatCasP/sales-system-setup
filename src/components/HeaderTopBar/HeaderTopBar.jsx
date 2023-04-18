@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 export default function HeaderTopBar(props) {
   const { onYearChange } = props;
   const P_USER = localStorage.getItem("P_USER");
+  const P_NAME = localStorage.getItem("P_NAME");
   const location = useLocation();
 
   const currentDate = new Date();
@@ -89,7 +90,7 @@ export default function HeaderTopBar(props) {
         <span className="code">
           <label>{P_USER}</label>
           <br />
-          <label>Manager Name </label>
+          <label>{P_NAME}</label>
           {/* {location.pathname} */}
         </span>
       </div>

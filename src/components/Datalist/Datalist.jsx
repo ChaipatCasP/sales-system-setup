@@ -9,15 +9,7 @@ export default function Datalist(props) {
   const P_COM = localStorage.getItem("P_COM");
   const P_USER = localStorage.getItem("P_USER");
   const [datavalue, setDatavalue] = useState([]);
-  const [myArray, setMyArray] = useState([]);
-
-  const addObjectToArray = (newObject) => {
-    setMyArray((prevArray) => [...prevArray, newObject]);
-  };
-
   const dataReturn = [];
-  const [getValue, setValue] = useState([]);
-
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [getGET_QUOTATION_DETAIL, setGET_QUOTATION_DETAIL] = useState([]);
@@ -25,6 +17,7 @@ export default function Datalist(props) {
   const [getGET_SAMPLE_REQUEST, setGET_SAMPLE_REQUEST] = useState([]);
   const [getGET_TOTAL_SALES, setGET_TOTAL_SALES] = useState([]);
   const [getGET_SALES_TARGET, setGET_SALES_TARGET] = useState([]);
+  const [getGET_ITEMS_COUNT, setGET_ITEMS_COUNT] = useState([]);
 
   const API_URL_WS_SALES_PLAN = environment.baseUrl + "apip/WS_SALES_PLAN/";
   const GET_QUOTATION_DETAIL = API_URL_WS_SALES_PLAN + "GET_QUOTATION_DETAIL";
@@ -32,6 +25,7 @@ export default function Datalist(props) {
   const GET_SAMPLE = API_URL_WS_SALES_PLAN + "GET_SAMPLE_REQUEST_DETAIL";
   const GET_TOTAL_SALES = API_URL_WS_SALES_PLAN + "GET_TOTAL_SALES";
   const GET_SALES_TARGET = API_URL_WS_SALES_PLAN + "GET_YEARLY_SALES_TARGET";
+  const GET_ITEMS_COUNT = API_URL_WS_SALES_PLAN + "GET_ITEMS_COUNT";
 
   function getMonthName(monthNumber) {
     const date = new Date();
@@ -73,12 +67,14 @@ export default function Datalist(props) {
         api3Response,
         api4Response,
         api5Response,
+        api6Response,
       ] = await Promise.all([
         callAPI(GET_QUOTATION_DETAIL, fdata),
         callAPI(GET_VISITATION_DETAIL, fdata2),
         callAPI(GET_SAMPLE, fdata),
         callAPI(GET_TOTAL_SALES, fdata2),
         callAPI(GET_SALES_TARGET, fdata),
+        callAPI(GET_ITEMS_COUNT, fdata2),
       ]);
 
       const api1Value = api1Response.result;
@@ -86,12 +82,14 @@ export default function Datalist(props) {
       const api3Value = api3Response.result;
       const api4Value = api4Response.result;
       const api5Value = api5Response.result;
+      const api6Value = api6Response.result;
 
       setGET_QUOTATION_DETAIL(api1Value);
       setGET_VISITATION_DETAIL(api2Value);
       setGET_SAMPLE_REQUEST(api3Value);
       setGET_TOTAL_SALES(api4Value);
       setGET_SALES_TARGET(api5Value);
+      setGET_ITEMS_COUNT(api6Value);
     };
 
     fetchAPIs();
@@ -105,32 +103,26 @@ export default function Datalist(props) {
     getGET_SAMPLE_REQUEST,
     getGET_TOTAL_SALES,
     getGET_SALES_TARGET,
+    getGET_ITEMS_COUNT,
   ]);
 
   function Calculate() {
-    setMyArray([]);
     for (let iMonth = 1; iMonth <= 12; iMonth++) {
       let MonthName = getMonthName(iMonth);
-      let customerListMonthWise = getGET_VISITATION_DETAIL.filter((row) =>
+      let VisitPlanned = getGET_VISITATION_DETAIL.filter((row) =>
         row.PLAN_DATETIME.includes(MonthName)
       );
       let uniqueCustomer = [
-        ...new Set(customerListMonthWise.map((item) => item.CUST_CODE)),
+        ...new Set(VisitPlanned.map((item) => item.CUST_CODE)),
       ];
 
       let repeatCustomer = 0;
       uniqueCustomer.forEach((uc) => {
-        let customerRows = customerListMonthWise.filter(
-          (row) => row.CUST_CODE === uc
-        );
+        let customerRows = VisitPlanned.filter((row) => row.CUST_CODE === uc);
         if (customerRows.length > 1) {
           repeatCustomer += 1;
         }
       });
-
-      let VisitPlanned = getGET_VISITATION_DETAIL.filter((row) =>
-        row.PLAN_DATETIME.includes(MonthName)
-      );
 
       let VisitCompleted = getGET_VISITATION_DETAIL
         .filter((row) => row.PLAN_DATETIME.includes(MonthName))
@@ -140,25 +132,21 @@ export default function Datalist(props) {
         row.INV_DATE.includes(MonthName)
       );
 
-      let valueQUOTATION = getGET_QUOTATION_DETAIL
+      let QuotationsCreated = getGET_QUOTATION_DETAIL
         .filter((row) => row.DOC_DATE.includes(MonthName))
         .filter((row) => row.QUOTATION_SALES === "Y");
 
-      let QuotaiontoSale = 0;
-      let sumvalueQUOTATION = valueQUOTATION.map(
-        (items, index) => (QuotaiontoSale += Number(items.TOTAL_SALES))
-      );
+      let QuotaiontoSale = "N/A";
 
-      //getMonthName(row.MONTH)
-      let valueGET_TOTAL_SALES = getGET_TOTAL_SALES
-        .filter((row) => getMonthName(row.MONTH).includes(MonthName))
+      let valNetItems = getGET_ITEMS_COUNT
+        .filter((row) => getMonthName(row.MONTH_NO).includes(MonthName))
         .map((items, index) => {
-          return items.TOTAL;
+          return Number(items.NET_ITEM_COUNT);
         });
 
-      let TotalSales = 0;
-      valueGET_TOTAL_SALES.forEach((tt) => {
-        TotalSales = Number(tt);
+      let NetItems = 0;
+      valNetItems.forEach((tt) => {
+        NetItems = Number(tt);
       });
 
       let valMonthlySale = getGET_SALES_TARGET
@@ -183,7 +171,6 @@ export default function Datalist(props) {
         MonthlyTarget = Number(tt);
       });
 
-      //const formattedPrice = price.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
       dataReturn.push({
         P_USER: STAFFCODE,
         P_YEAR: P_YEAR,
@@ -193,11 +180,11 @@ export default function Datalist(props) {
         CustomersPlanned: uniqueCustomer.length.toLocaleString(),
         Repeatingcustomers: repeatCustomer.toLocaleString(),
         SamplesRequested: SamplesRequested.length.toLocaleString(),
-        QuotationsCreated: valueQUOTATION.length.toLocaleString(),
-        QuotaiontoSale: QuotaiontoSale.toLocaleString(),
-        TotalSales: TotalSales.toLocaleString(),
+        QuotationsCreated: QuotationsCreated.length.toLocaleString(),
+        QuotaiontoSale: QuotaiontoSale,
         MonthlySale: MonthlySale.toLocaleString(),
         MonthlyTarget: MonthlyTarget.toLocaleString(),
+        NetItems: NetItems.toLocaleString(),
       });
     }
 
@@ -274,17 +261,10 @@ export default function Datalist(props) {
                 <label className="txtheader">Quotaion to Sale :</label>
                 <label className="txtvalue">{items.QuotaiontoSale}</label>
               </div>
-              {/* 
-              <br />
-              <div>
-                <label className="txtheader">Total Sales :</label>
-                <label className="txtvalue">{items.TotalSales}</label>
-              </div> */}
-
               <br />
               <div>
                 <label className="txtheader">Net Items :</label>
-                <label className="txtvalue">....</label>
+                <label className="txtvalue">{items.NetItems}</label>
               </div>
               <div>
                 <label className="txtheader">Loss Items :</label>

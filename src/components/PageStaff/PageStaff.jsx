@@ -16,7 +16,7 @@ export default function PageStaff(prors) {
     document.getElementById("datalist").style.display = "";
   }
 
-  function onChangeSearch(value){
+  function onChangeSearch(value) {
     document.getElementById("datalist").style.display = "none";
     setSearchText(value);
   }
@@ -30,6 +30,9 @@ export default function PageStaff(prors) {
 
   return (
     <>
+      <div className="headerTop">
+        <label>Visitation Report - By Staff Monthly</label>
+      </div>
       <div className="app-content">
         <div className="app-content-main">
           <div className="app-content-main-Search">

@@ -3,7 +3,7 @@
     text-decoration-line: underline;
 }
 
-.app-details-item {
+.app-visit-details-item {
     border: 1px solid gray;
     margin-left: 10px;
     margin-right: 10px;
@@ -14,7 +14,7 @@
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
     width: 230px;
-    height: 510px;;
+    height: 420px;;
     color: #4880a5;
 }
 

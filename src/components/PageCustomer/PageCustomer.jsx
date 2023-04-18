@@ -47,7 +47,7 @@ export default function PageCustomer(props) {
   return (
     <>
       <div className="viewingfor">
-        <div>Viewing for :</div>
+        <div className="viewingfor-header">Viewing for :</div>
         <div>
           <div className="app-staff-header" id={"header" + STAFFCODE}>
             <div className="app-stafflist-header-circle">

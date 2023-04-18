@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomerList from "./CustomerList/CustomerList";
 import Detailslist from "./Detailslist/Detailslist";
+import "./VisitationReportByCustomer.css";
 
 export default function VisitationReportByCustomer(props) {
   const { P_YEAR } = props;
@@ -21,12 +22,15 @@ export default function VisitationReportByCustomer(props) {
   }
 
   const [customerCode, SetCustomerCode] = useState("");
-  function onClickCustomer(value){
+  function onClickCustomer(value) {
     SetCustomerCode(value);
   }
 
   return (
     <>
+      <div className="headerTop">
+        <label>Visitation Report - By Customer Monthly</label>
+      </div>
       <div className="app-content">
         <div className="app-content-main">
           <div className="app-content-main-Search">
@@ -37,7 +41,11 @@ export default function VisitationReportByCustomer(props) {
               onChange={(event) => onChangeSearch(event.target.value)}
             />
           </div>
-          <CustomerList onClick={onClickCustomer}P_YEAR={P_YEAR} searchText={searchText} />
+          <CustomerList
+            onClick={onClickCustomer}
+            P_YEAR={P_YEAR}
+            searchText={searchText}
+          />
         </div>
 
         <div className="app-content-box">
