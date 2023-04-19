@@ -1,0 +1,23 @@
+table {
+    padding-top: 20px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-spacing:0;
+}
+
+thead {
+    margin: 0;
+    padding: 0;
+    background-color: #5a73b5;
+}
+
+th {
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+.tdcenter {
+    text-align: center;
+}

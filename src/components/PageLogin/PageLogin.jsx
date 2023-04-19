@@ -50,9 +50,17 @@ export default function PageLogin() {
     formdata.append("P_SEQ_ID", id);
 
     const data = formdata;
-    callAPI(endpoint, data).then((response) => {
-      setApiResponse(response.result);
-    });
+    callAPI(endpoint, data)
+      .then((response) => {
+        console.log(response);
+        setApiResponse(response.result);
+      })
+      .then(
+        (data) => {
+          SetlocalStorage(data);
+        },
+        (error) => {}
+      );
   }
 
   const [api2Response, setApi2Response] = useState([]);
@@ -70,33 +78,7 @@ export default function PageLogin() {
     });
   }
 
-  useEffect(() => {
-    test();
-    // USER_BY_PASS(P_USER);
-  }, [apiResponse]);
-
-  useEffect(() => {
-    let arrUSERNAME = api2Response.map((items, index) => {
-      return items.NAME_E;
-    });
-
-    let P_NAME = "";
-    arrUSERNAME.forEach((tt) => {
-      P_NAME = String(tt);
-    });
-
-    localStorage.setItem("P_NAME", P_NAME);
-  }, [api2Response]);
-
-  function logout() {
-    localStorage.setItem("P_COM", "");
-    localStorage.setItem("P_USER", "");
-    localStorage.setItem("STAFFCODE", "");
-    localStorage.setItem("P_MONTH", "");
-    localStorage.setItem("P_YEAR", "");
-  }
-
-  function test() {
+  function SetlocalStorage() {
     let arrUSERNAME = apiResponse.map((items, index) => {
       return items.USERNAME;
     });
@@ -105,8 +87,6 @@ export default function PageLogin() {
     arrUSERNAME.forEach((tt) => {
       USERNAME = String(tt);
     });
-
-    USER_BY_PASS(USERNAME);
 
     let arrCOM = apiResponse.map((items, index) => {
       return items.COMPANY;
@@ -122,11 +102,56 @@ export default function PageLogin() {
     localStorage.setItem("P_YEAR", formattedDate);
     setP_USER(USERNAME);
 
-    const username = localStorage.getItem("P_USER");
+    const endpoint = GET_USER_BY_PASS;
+    var formdata = new FormData();
+    formdata.append("P_COM", "JB");
+    formdata.append("P_USER", "JBT04");
+    formdata.append("P_KEY", "");
+    formdata.append("P_LOGIN", USERNAME);
 
-    if (username !== "") {
-      // navigate("/PageStaff");
+    const data = formdata;
+    callAPI(endpoint, data)
+      .then((response) => {
+        setApi2Response(response.result);
+      })
+      .then(
+        (data) => {
+          // SetlocalStorageName();
+        },
+        (error) => {}
+      );
+  }
+
+  useEffect(() => {
+    SetlocalStorageName();
+  }, [api2Response]);
+
+  function SetlocalStorageName() {
+    let arrUSERNAME = api2Response.map((items, index) => {
+      return items.NAME_E;
+    });
+
+    let P_NAME = "";
+    arrUSERNAME.forEach((tt) => {
+      P_NAME = String(tt);
+    });
+    console.log(P_NAME);
+    localStorage.setItem("P_NAME", P_NAME);
+
+    const local_P_USER = localStorage.getItem("P_USER");
+    const local_P_NAME = localStorage.getItem("P_NAME");
+
+    if (local_P_USER !== "" && local_P_NAME !== "") {
+      navigate("/PageStaff");
     }
+  }
+
+  function logout() {
+    localStorage.setItem("P_COM", "");
+    localStorage.setItem("P_USER", "");
+    localStorage.setItem("STAFFCODE", "");
+    localStorage.setItem("P_MONTH", "");
+    localStorage.setItem("P_YEAR", "");
   }
 
   return <>Login</>;

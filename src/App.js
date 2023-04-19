@@ -6,6 +6,7 @@ import PageCustomer from "./components/PageCustomer/PageCustomer";
 import { Navigate, useRoutes } from "react-router-dom";
 import PageLogin from "./components/PageLogin/PageLogin";
 import VisitationReportByCustomer from "./components/VisitationReportByCustomer/VisitationReportByCustomer";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   const P_USER = localStorage.getItem("P_USER");
@@ -14,6 +15,10 @@ function App() {
 
   let router = useRoutes([
     { path: "/", element: <PageLogin /> },
+    {
+      path: "/Dashboard",
+      element: <Dashboard />,
+    },
     {
       path: "/PageLogin",
       element: <PageLogin />,

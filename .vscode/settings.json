@@ -3,6 +3,8 @@
         "Caltest",
         "CUSTOMERCODE",
         "datavalue",
+        "Setlocal",
+        "tdcenter",
         "txtheader",
         "txtvalue"
     ]
