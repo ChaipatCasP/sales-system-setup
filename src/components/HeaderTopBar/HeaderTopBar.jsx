@@ -8,8 +8,18 @@ export default function HeaderTopBar(props) {
   const location = useLocation();
 
   const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleString('en-US', { year: 'numeric' });
+  const formattedDate = currentDate.toLocaleString("en-US", {
+    year: "numeric",
+  });
   const selectedOptionId = formattedDate;
+
+  useEffect(() => {
+    const pathname = location.pathname;
+
+    if (pathname === "/Dashboard") {
+      document.getElementById("topbar").style.display = "none";
+    }
+  }, [location.pathname]);
 
   // let message;
   // if (location.pathname === "/PageCustomer") {
@@ -19,7 +29,7 @@ export default function HeaderTopBar(props) {
   //       onChange={(event) => onMonthChange(event.target.value)}
   //     >
   //       <option className="dropdown-option" value={""}>
-          
+
   //       </option>
   //       <option className="dropdown-option" value={"JAN"}>
   //         JAN
@@ -62,7 +72,7 @@ export default function HeaderTopBar(props) {
   // }
   return (
     <>
-      <div className="topbar">
+      <div className="topbar" id="topbar">
         <span className="name">
           <select
             className="dropdown-year"
@@ -87,6 +97,7 @@ export default function HeaderTopBar(props) {
           </select>
         </span>
 
+        {/* <span>{location.pathname}</span> */}
         <span className="code">
           <label>{P_USER}</label>
           <br />

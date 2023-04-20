@@ -23,7 +23,8 @@ export default function PageStaff(prors) {
 
   useEffect(() => {
     const P_USER = localStorage.getItem("P_USER");
-    if (P_USER === "") {
+    const P_NAME = localStorage.getItem("P_NAME");
+    if (P_USER === "" || P_NAME === "") {
       navigate("/PageLogin");
     }
   }, []);

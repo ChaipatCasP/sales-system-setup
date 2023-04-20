@@ -1,9 +1,75 @@
+.headerDashboard {
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+
+.la-headerDashboard {
+    color: #4eae4a;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.la-AdvancedFilter {
+    color: #5d77b7;
+    font-weight: 500;
+    font-size: 20px;
+    text-decoration-line: underline;
+}
+
+select {
+    border-radius: 10px;
+    height: 35px;
+}
+
+.dropchannel {
+    font-weight: 500;
+    font-size: 20px;
+    float: right;
+    margin-right: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+.managerprofile {
+    padding-left: 30px;
+    margin-right: 10px;
+    height: 30px;
+    border-radius: 10px;
+    /* 
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    border-color: lightgray;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    */
+}
+
+.input-with-icon {
+    position: relative;
+    float: right;
+}
+
+.input-with-icon .icon {
+    position: absolute;
+    top: 50%;
+    /* จัดให้ Icon ตรงกลางแนวตั้ง */
+    left: 10px;
+    /* จัดให้ Icon ตรงกลางแนวนอน */
+    transform: translateY(-50%);
+    /* จัดให้ Icon ตรงกลางแนวตั้ง */
+}
+
+
 table {
     padding-top: 20px;
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
-    border-spacing:0;
+    border-spacing: 0;
 }
 
 thead {
@@ -21,3 +87,110 @@ th {
 .tdcenter {
     text-align: center;
 }
+
+.thcol-3 {
+    border: solid;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+}
+
+
+
+
+.dropdown {
+    position: relative;
+    /* display: inline-block; */
+    float: right;
+    margin-right: 20px;
+}
+
+.dropdown select {
+    padding-left: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #ccc;
+
+}
+
+.dropdown .icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+}
+
+.clamationFill {
+    padding-left: 50px;
+}
+
+.AdvancedFilter {
+    /* border: solid; */
+    padding: 10px;
+}
+
+
+.in-AdvancedFilter {
+    position: relative;
+    /* display: inline-block; */
+    float: left;
+    /* margin-right: 20px; */
+    width: 25%;
+}
+
+.in-AdvancedFilter select {
+    width: 70%;
+    text-align: center;
+}
+
+.in-AdvancedFilter select:disabled {
+    background-color: #d6d6d6;
+}
+
+.in-AdvancedFilter option {
+    text-align: left;
+}
+
+/* .customercilck {
+    color:red;
+    cursor: pointer;
+} */
+
+.customercilck {
+    /* font-size: 24px; */
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .customercilck:hover {
+    color: white;
+    background-color: lightgreen;
+  }
+
+
+/* .dropdownMonth select {
+    padding-left: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #ccc;
+
+} */
+
+/* .modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-main {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  } */

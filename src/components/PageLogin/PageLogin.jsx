@@ -28,17 +28,18 @@ export default function PageLogin() {
     const params = new URLSearchParams(window.location.search);
     const ID = params.get("ID");
     const P_USER = localStorage.getItem("P_USER");
+    const P_NAME = localStorage.getItem("P_NAME");
 
     if (ID === null) {
-      if (P_USER === "") {
+      if (P_USER === "" || P_NAME === "") {
       } else {
-        navigate("/PageStaff");
+        navigate("/Dashboard");
       }
     } else {
-      logout();
+      // logout();
       BYPASS_LOGIN(ID);
     }
-  }, []);
+  });
 
   const [apiResponse, setApiResponse] = useState([]);
   function BYPASS_LOGIN(id) {
@@ -142,7 +143,7 @@ export default function PageLogin() {
     const local_P_NAME = localStorage.getItem("P_NAME");
 
     if (local_P_USER !== "" && local_P_NAME !== "") {
-      navigate("/PageStaff");
+      navigate("/Dashboard");
     }
   }
 
